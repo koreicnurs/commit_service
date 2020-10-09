@@ -13,4 +13,4 @@ class RepoAdmin(admin.ModelAdmin):
 
 @admin.register(Commit)
 class CommitAdmin(admin.ModelAdmin):
-    fields = ('repo', 'sha', 'author', 'message', 'commit_time')
+    list_display = ('repo', 'author', 'sha', 'message', 'commit_time')

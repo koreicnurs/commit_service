@@ -16,6 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from commits.views import RepositoryListView, CommitListView
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('repositories_list/', RepositoryListView.as_view()),
+    path('commits_list/', CommitListView.as_view()),
 ]

@@ -13,6 +13,7 @@ gh_url = 'https://api.github.com/repos/{}/{}/commits'
 def parsing_repositories():
     repos = Repository.objects.all()
     gl_repos = repos.filter(type='gitlab')
+    gh_repos = repos.filter(type='github')
     for repo in gl_repos:
         url = gl_url.format(repo.project_id)
         res = requests.get(url)
@@ -26,5 +27,20 @@ def parsing_repositories():
                 sha=commit["id"],
                 author=commit["author_name"],
                 message=commit["message"],
+                commit_time=commit_time.datetime,
+            )
+    for repo in gh_repos:
+        url = gh_url.format(repo.author_name, repo.repository_name)
+        res = requests.get(url)
+        if res.status_code != 200:
+            print(f'Fail to get commits of this Project')
+            continue
+        for commit in res.json():
+            commit_time = arrow.get(commit["commit"]["author"]["date"])
+            Commit.objects.get_or_create(
+                repo=repo,
+                sha=commit["sha"],
+                author=commit["commit"]["author"]["name"],
+                message=commit["commit"]["message"],
                 commit_time=commit_time.datetime,
             )
