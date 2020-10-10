@@ -20,6 +20,6 @@ from commits.views import RepositoryListView, CommitListView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('repositories_list/', RepositoryListView.as_view()),
-    path('commits_list/', CommitListView.as_view()),
+    path('api/v1/repositories_list/', RepositoryListView.as_view(), name='repositories_list'),
+    path('api/v1/commits_list/', CommitListView.as_view(), name='commits_list'),
 ]
